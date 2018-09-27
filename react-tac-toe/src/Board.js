@@ -13,7 +13,27 @@ class Board extends Component {
   }
 
   reportMark = (pos) => {
-    console.log(pos)
+    let mark = this.state.player1 ? 'X' : 'O';
+    console.log(`Player ${mark} at position ${pos}`)
+    // set my mark in the game array
+    
+    if(this.state.game[pos] === ''){
+      let game = this.state.game
+      game[pos] = mark
+      this.setState({
+        game
+      })
+    }
+
+    // TODO: checkWin()
+    this.flip()
+  }
+
+  flip  = () => {
+    let player1 = !this.state.player1
+    this.setState({
+      player1
+    })
   }
 
   render() {
