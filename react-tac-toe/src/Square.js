@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import Board from './Board'
 import './App.css';
 
-class App extends Component {
+class Square extends Component {
   render() {
     return (
-      <Board />
+          <div className="square"></div>
     );
   }
 }
 
-export default App;
+export default Square;
