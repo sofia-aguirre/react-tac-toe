@@ -8,25 +8,28 @@ class Board extends Component {
     super()
     this.state = {
       player1: true,
-      game: ['', '', '', '', '', '', '', '', '']
+      game: ['', '', '', '', '', '', '', '', ''],
+      message: '',
+      inPlay: true
     }
   }
 
   reportMark = (pos) => {
+    if(!this.state.inPlay){
+      return null;
+    }
     let mark = this.state.player1 ? 'X' : 'O';
     console.log(`Player ${mark} at position ${pos}`)
+
     // set my mark in the game array
-    
     if(this.state.game[pos] === ''){
       let game = this.state.game
       game[pos] = mark
-      this.setState({
-        game
-      })
+      this.setState({ game })
+      this.checkWin(mark)
+      this.flip()
     }
 
-    // TODO: checkWin()
-    this.flip()
   }
 
   flip  = () => {
@@ -34,6 +37,27 @@ class Board extends Component {
     this.setState({
       player1
     })
+  }
+
+  checkWin = (mark) => {
+    let game = this.state.game 
+    if(
+      (game[0] === mark &&  game[3] === mark  &&  game[6] === mark) ||
+      (game[1] === mark &&  game[4] === mark    &&  game[7] === mark) ||
+      (game[2] === mark &&  game[5] === mark  &&  game[8] === mark) ||
+
+      (game[0] === mark &&  game[1] === mark  &&  game[2] === mark) ||
+      (game[3] === mark &&  game[4] === mark  &&  game[5] === mark) ||
+      (game[6] === mark &&  game[7] === mark  &&  game[8] === mark) ||
+
+      (game[0] === mark &&  game[4] === mark  &&  game[8] === mark) ||
+      (game[2] === mark &&  game[4] === mark  &&  game[6] === mark) 
+      )
+      {
+      this.setState({
+        message: `PLAYER ${(mark === 'X') ? 1: 2} WINS!!!!`, inPlay: false
+      })
+    }
   }
 
   render() {
@@ -52,7 +76,7 @@ class Board extends Component {
     return (
       <div>
         <h1>React-Tac-Toe</h1>
-
+        <h3>{this.state.message}</h3>
         <h4>Player: {this.state.player1 ? 'Player 1' : 'Player 2' }</h4>
         <div className="board">
           {squares}
