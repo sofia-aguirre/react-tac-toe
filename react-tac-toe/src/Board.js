@@ -10,7 +10,11 @@ class Board extends Component {
       player1: true,
       game: ['', '', '', '', '', '', '', '', ''],
       message: '',
-      inPlay: true
+      inPlay: true,
+      hiddenmsg: '',
+      scores: '',
+      wins1: 0,
+      wins2: 0
     }
   }
 
@@ -55,9 +59,34 @@ class Board extends Component {
       )
       {
       this.setState({
-        message: `PLAYER ${(mark === 'X') ? 1: 2} WINS!!!!`, inPlay: false
+        message: `PLAYER ${(mark === 'X') ? 1 : 2} WINS!!! Loser starts next game!`,
+        inPlay: false,
+        hiddenmsg: 'Click here to START OVER',
       })
+      if (mark === 'X'){
+        this.setState({
+          wins1: this.state.wins1+1 }) }
+      else {
+        this.setState({
+          wins2: this.state.wins2+1 })}
     }
+    //what i'm trying to do is if the board is full, show the start over button
+    // else {
+    //   this.setState({
+    //     message: 'It\'s a TIE!',
+    //     hiddenmsg: 'Click here to START OVER'
+    //   })
+    // }
+  }
+
+  // resets board, allows user to play again
+  gameReset = () => {
+    this.setState({
+      message: '', 
+      hiddenmsg: '', 
+      inPlay: true, 
+      game:['', '', '', '', '', '', '', '', '']
+    })
   }
 
   render() {
@@ -77,7 +106,10 @@ class Board extends Component {
       <div>
         <h1>React-Tac-Toe</h1>
         <h3>{this.state.message}</h3>
-        <h4>Player: {this.state.player1 ? 'Player 1' : 'Player 2' }</h4>
+        <h3 onClick={ this.gameReset }>{this.state.hiddenmsg}</h3>
+        <h4>Player 1 # of Wins: {this.state.wins1}</h4>
+        <h4>Player 2 # of Wins: {this.state.wins2}</h4>
+        <h4>Next turn: {this.state.player1 ? 'Player 1' : 'Player 2' }</h4>
         <div className="board">
           {squares}
         </div>
